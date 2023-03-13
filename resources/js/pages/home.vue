@@ -26,12 +26,17 @@
 </template>
 
 <script>
+import { mapActions } from "vuex"
+
 import ButtonGroup from "../components/ButtonGroup.vue"
 
 export default {
   name: "Home",
   components: {
     ButtonGroup
+  },
+  mounted () {
+    this.fetchData()
   },
   data () {
     return {
@@ -52,8 +57,8 @@ export default {
       ]
     }
   },
-  mounted () {
-
-  }
+  methods: {
+    ...mapActions(['fetchData'])
+  },
 }
 </script>
