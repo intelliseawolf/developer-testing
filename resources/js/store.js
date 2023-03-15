@@ -14,9 +14,9 @@ const store = new Vuex.Store({
         },
     },
     actions: {
-        fetchData({ commit }) {
+        fetchData({ commit }, data) {
             return axios
-                .get("http://localhost:8000/api/data")
+                .get("http://localhost:8000/api/data", { params: data })
                 .then((response) => commit("setData", response.data))
                 .catch((err) => console.log(err));
         },
