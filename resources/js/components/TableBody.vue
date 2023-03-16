@@ -19,7 +19,13 @@
             {{ convertDate(item.DateSent) }}
           </span>
         </div>
-        <div class="w-[380px] text-gray-400 flex justify-start items-center">
+        <div
+          :class="{
+            'w-[380px] flex justify-start items-center': true,
+            'font-bold text-black': item.Quote,
+            'text-gray-400': !item.Quote
+          }"
+        >
           {{ item.Company }}
         </div>
         <div
@@ -59,7 +65,11 @@
               class="w-[170px] text-black flex justify-center items-center"
             ></div>
             <div
-              class="w-[380px] text-gray-400 flex justify-start items-center"
+              :class="{
+                'w-[380px] flex justify-start items-center': true,
+                'text-black': item.Quote,
+                'text-gray-400': !item.Quote
+              }"
             >
               {{ display }}
             </div>

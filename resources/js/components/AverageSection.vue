@@ -45,7 +45,7 @@ export default {
         }
       }
       if (!sum || !count) return ""
-      const result = (sum / count).toFixed(2);
+      const result = Math.round(sum / count * 1000) / 1000;;
 
       switch (this.params.display) {
         case "Spread":
