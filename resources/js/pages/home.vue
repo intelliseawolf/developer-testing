@@ -22,82 +22,261 @@
         />
       </div>
       <div class="table mt-4">
-        <div class="table-header flex border-b border-1 border-b-gray-400">
-          <div class="w-[170px] text-gray-400 flex justify-center items-end">
-            DATE SENT
-          </div>
-          <div class="w-[380px] text-gray-400 flex justify-start items-end">
-            COMPANY
-          </div>
-          <div class="w-[180px] px-2">
-            <p
-              class="text-center border-b border-1 border-b-gray-400 font-medium"
-            >
-              5 YRS
-            </p>
-            <div class="flex justify-around text-gray-400">
-              <p class="text-center">FIX</p>
-              <p class="text-center">FYN</p>
-            </div>
-          </div>
-          <div class="w-[180px] px-2">
-            <p
-              class="text-center border-b border-1 border-b-gray-400 font-medium"
-            >
-              10 YRS
-            </p>
-            <div class="flex justify-around text-gray-400">
-              <p class="text-center">FIX</p>
-              <p class="text-center">FYN</p>
-            </div>
-          </div>
-          <div class="w-[180px] px-2">
-            <p
-              class="text-center border-b border-1 border-b-gray-400 font-medium"
-            >
-              40 YRS
-            </p>
-            <div class="flex justify-around text-gray-400">
-              <p class="text-center">FIX</p>
-              <p class="text-center">FYN</p>
-            </div>
-          </div>
-        </div>
+        <table-header />
         <div>
-          <button
-            @click="isCollapsed = !isCollapsed"
-            class="bg-blue-500 text-white py-2 px-4 rounded"
-          >
-            {{ isCollapsed ? 'Expand' : 'Collapse' }}
-          </button>
-
-          <transition
-            enter-active-class="animate-fade-in"
-            leave-active-class="animate-fade-out"
-          >
-            <div v-show="!isCollapsed" class="bg-gray-100 p-4">
-              <p>This is the content that will be collapsed/expanded.</p>
-              <p>It can contain any HTML or Vue components.</p>
+          <div v-for="(item, index) in getData" :key="item.Company + index">
+            <div class="flex py-1 border-b border-1 border-b-gray-300">
+              <div
+                class="w-[170px] text-black flex justify-center items-center"
+              >
+                <button
+                  @click="changeCollapseIndex(index)"
+                  class="bg-white text-black rounded pr-3"
+                >
+                  {{ collapseIndex !== index ? '+' : '-' }}
+                </button>
+                <span>
+                  {{ convertDate(item.DateSent) }}
+                </span>
+              </div>
+              <div
+                class="w-[380px] text-gray-400 flex justify-start items-center"
+              >
+                {{ item.Company }}
+              </div>
+              <div class="w-[180px] text-black flex justify-around">
+                <p class="text-center w-[90px] pt-1">
+                  {{
+                    item.Quote
+                      ? getQuoteItem(item.Quote, 5, 'FIX', 'Spread')
+                        ? '+' +
+                          getQuoteItem(item.Quote, 5, 'FIX', 'Spread') +
+                          'bp'
+                        : ''
+                      : ''
+                  }}
+                </p>
+                <p class="text-center w-[90px] pt-1">
+                  {{
+                    item.Quote
+                      ? getQuoteItem(item.Quote, 5, 'FRN', 'Spread')
+                        ? '+' +
+                          getQuoteItem(item.Quote, 5, 'FRN', 'Spread') +
+                          'bp'
+                        : ''
+                      : ''
+                  }}
+                </p>
+              </div>
+              <div class="w-[180px] text-black flex justify-around">
+                <p class="text-center w-[90px] pt-1">
+                  {{
+                    item.Quote
+                      ? getQuoteItem(item.Quote, 10, 'FIX', 'Spread')
+                        ? '+' +
+                          getQuoteItem(item.Quote, 10, 'FIX', 'Spread') +
+                          'bp'
+                        : ''
+                      : ''
+                  }}
+                </p>
+                <p class="text-center w-[90px] pt-1">
+                  {{
+                    item.Quote
+                      ? getQuoteItem(item.Quote, 10, 'FRN', 'Spread')
+                        ? '+' +
+                          getQuoteItem(item.Quote, 10, 'FRN', 'Spread') +
+                          'bp'
+                        : ''
+                      : ''
+                  }}
+                </p>
+              </div>
+              <div class="w-[180px] text-black flex justify-around">
+                <p class="text-center w-[90px] pt-1">
+                  {{
+                    item.Quote
+                      ? getQuoteItem(item.Quote, 40, 'FIX', 'Spread')
+                        ? '+' +
+                          getQuoteItem(item.Quote, 40, 'FIX', 'Spread') +
+                          'bp'
+                        : ''
+                      : ''
+                  }}
+                </p>
+                <p class="text-center w-[90px] pt-1">
+                  {{
+                    item.Quote
+                      ? getQuoteItem(item.Quote, 40, 'FRN', 'Spread')
+                        ? '+' +
+                          getQuoteItem(item.Quote, 40, 'FRN', 'Spread') +
+                          'bp'
+                        : ''
+                      : ''
+                  }}
+                </p>
+              </div>
             </div>
-          </transition>
-        </div>
-        <div>
-          <button
-            @click="isCollapsed = !isCollapsed"
-            class="bg-blue-500 text-white py-2 px-4 rounded"
-          >
-            {{ isCollapsed ? 'Expand' : 'Collapse' }}
-          </button>
-
-          <transition
-            enter-active-class="animate-fade-in"
-            leave-active-class="animate-fade-out"
-          >
-            <div v-show="!isCollapsed" class="bg-gray-100 p-4">
-              <p>This is the content that will be collapsed/expanded.</p>
-              <p>It can contain any HTML or Vue components.</p>
-            </div>
-          </transition>
+            <transition
+              enter-active-class="animate-fade-in"
+              leave-active-class="animate-fade-out"
+            >
+              <div v-show="collapseIndex === index" class="flex flex-col">
+                <div class="flex py-1 border-b border-1 border-b-gray-300">
+                  <div
+                    class="w-[170px] text-black flex justify-center items-center"
+                  ></div>
+                  <div
+                    class="w-[380px] text-gray-400 flex justify-start items-center"
+                  >
+                    Yield
+                  </div>
+                  <div class="w-[180px] text-black flex justify-around">
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 5, 'FIX', 'Yield')
+                            ? getQuoteItem(item.Quote, 5, 'FIX', 'Yield') + '%'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 5, 'FRN', 'Yield')
+                            ? getQuoteItem(item.Quote, 5, 'FRN', 'Yield') + '%'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                  </div>
+                  <div class="w-[180px] text-black flex justify-around">
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 10, 'FIX', 'Yield')
+                            ? getQuoteItem(item.Quote, 10, 'FIX', 'Yield') + '%'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 10, 'FRN', 'Yield')
+                            ? getQuoteItem(item.Quote, 10, 'FRN', 'Yield') + '%'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                  </div>
+                  <div class="w-[180px] text-black flex justify-around">
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 40, 'FIX', 'Yield')
+                            ? getQuoteItem(item.Quote, 40, 'FIX', 'Yield') + '%'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 40, 'FRN', 'Yield')
+                            ? getQuoteItem(item.Quote, 40, 'FRN', 'Yield') + '%'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <div class="flex py-1 border-b border-1 border-b-gray-300">
+                  <div
+                    class="w-[170px] text-black flex justify-center items-center"
+                  ></div>
+                  <div
+                    class="w-[380px] text-gray-400 flex justify-start items-center"
+                  >
+                    3MLSpread
+                  </div>
+                  <div class="w-[180px] text-black flex justify-around">
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 5, 'FIX', '3MLSpread')
+                            ? '+' +
+                              getQuoteItem(item.Quote, 5, 'FIX', '3MLSpread') +
+                              'bp'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 5, 'FRN', '3MLSpread')
+                            ? '+' +
+                              getQuoteItem(item.Quote, 5, 'FRN', '3MLSpread') +
+                              'bp'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                  </div>
+                  <div class="w-[180px] text-black flex justify-around">
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 10, 'FIX', '3MLSpread')
+                            ? '+' +
+                              getQuoteItem(item.Quote, 10, 'FIX', '3MLSpread') +
+                              'bp'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 10, 'FRN', '3MLSpread')
+                            ? '+' +
+                              getQuoteItem(item.Quote, 10, 'FRN', '3MLSpread') +
+                              'bp'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                  </div>
+                  <div class="w-[180px] text-black flex justify-around">
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 40, 'FIX', '3MLSpread')
+                            ? '+' +
+                              getQuoteItem(item.Quote, 40, 'FIX', '3MLSpread') +
+                              'bp'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                    <p class="text-center w-[90px] pt-1">
+                      {{
+                        item.Quote
+                          ? getQuoteItem(item.Quote, 40, 'FRN', '3MLSpread')
+                            ? '+' +
+                              getQuoteItem(item.Quote, 40, 'FRN', '3MLSpread') +
+                              'bp'
+                            : ''
+                          : ''
+                      }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
         </div>
       </div>
     </div>
@@ -106,13 +285,16 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex"
+import moment from "moment"
 
 import ButtonGroup from "../components/ButtonGroup.vue"
+import TableHeader from '../components/TableHeader.vue'
 
 export default {
   name: "Home",
   components: {
-    ButtonGroup
+    ButtonGroup,
+    TableHeader
   },
   mounted () {
     this.fetchData(this.params)
@@ -140,19 +322,32 @@ export default {
         years: ['5yrs', '10yrs', '40yrs'],
         display: "spread"
       },
-      isCollapsed: true,
+      collapseIndex: "",
     }
   },
   computed: {
     ...mapGetters([
       'getData',
     ]),
-    data () {
-      return this.data;
-    },
   },
   methods: {
-    ...mapActions(['fetchData'])
+    ...mapActions(['fetchData']),
+    convertDate (date) {
+      if (!date) return
+      const dateObj = moment(date, 'YYYY-MM-DD'); // create a moment object from the input date
+      const formattedDate = dateObj.format('DD-MMM-YY').toUpperCase();
+
+      return formattedDate
+    },
+    getQuoteItem (data, year, key1, key2) {
+      const filteredByKey1 = Object.values(data).filter((item) => item.Years === year && item.CouponType === key1)[0]
+      if (!filteredByKey1) return
+      return filteredByKey1[key2]
+    },
+    changeCollapseIndex (index) {
+      if (this.collapseIndex === index) this.collapseIndex = ""
+      else this.collapseIndex = index
+    }
   },
 }
 </script>

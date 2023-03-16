@@ -10,6 +10,7 @@ const store = new Vuex.Store({
     },
     mutations: {
         setData(state, data) {
+            console.log(data);
             state.data = data;
         },
     },
