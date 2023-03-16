@@ -12,6 +12,7 @@
           !selectedButton.includes(button.id),
         'border-x-white': selectedButton.includes(button.id) && isMedium(index)
       }"
+      @click="changeSelected(button.id)"
     >
       {{ button.name }}
     </button>
@@ -24,6 +25,10 @@ export default {
   props: {
     buttons: Array,
     selected: Array,
+    canSelectOne: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
@@ -34,12 +39,28 @@ export default {
   methods: {
     isMedium (index) {
       return (0 < index) && (index < this.buttonList.length - 1)
+    },
+    changeSelected (id) {
+      let updated = null;
+
+      if (this.canSelectOne) {
+        updated = id
+      } else {
+        if (this.selectedButton.includes(id)) {
+          updated = [...this.selectedButton];
+          const index = updated.indexOf(id);
+          updated.splice(index, 1);
+        }
+        else updated = [...this.selectedButton, id]
+      }
+
+      this.$emit("changeSelected", updated)
     }
   },
   watch: {
     selected (newVal) {
       this.selectedButton = newVal
-    }
+    },
   }
 }
 </script>
