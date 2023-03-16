@@ -30,7 +30,7 @@
       </div>
       <div class="table mt-4">
         <table-header :params="params" />
-        <table-body :data="getData" />
+        <table-body :data="getData" :params="params" />
       </div>
     </div>
   </div>
@@ -38,7 +38,6 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex"
-import moment from "moment"
 
 import ButtonGroup from "../components/ButtonGroup.vue"
 import TableHeader from '../components/TableHeader.vue'
@@ -67,15 +66,15 @@ export default {
         { id: "40yrs", name: "40 YRS" }
       ],
       buttonGroup3: [
-        { id: "spread", name: "Spread" },
-        { id: "yield", name: "Yield" },
-        { id: "3mlspread", name: "3MLSpread" }
+        { id: "Spread", name: "Spread" },
+        { id: "Yield", name: "Yield" },
+        { id: "3MLSpread", name: "3MLSpread" }
       ],
       params: {
         companyName: "",
         currency: "usd",
         years: ['5yrs', '10yrs', '40yrs'],
-        display: "spread"
+        display: "Spread"
       },
     }
   },
@@ -91,6 +90,7 @@ export default {
         ...this.params,
         [key]: value
       }
+      this.fetchData(this.params)
     }
   },
 }

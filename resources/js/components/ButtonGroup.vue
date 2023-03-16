@@ -12,7 +12,7 @@
           !selectedButton.includes(button.id),
         'border-x-white': selectedButton.includes(button.id) && isMedium(index)
       }"
-      @click="changeSelected(button.id)"
+      @click="changeSelected(button.id, index)"
     >
       {{ button.name }}
     </button>
@@ -40,18 +40,17 @@ export default {
     isMedium (index) {
       return (0 < index) && (index < this.buttonList.length - 1)
     },
-    changeSelected (id) {
+    changeSelected (id, listIndex) {
       let updated = null;
 
       if (this.canSelectOne) {
         updated = id
       } else {
+        updated = [...this.selectedButton];
         if (this.selectedButton.includes(id)) {
-          updated = [...this.selectedButton];
-          const index = updated.indexOf(id);
-          updated.splice(index, 1);
+          updated = updated.filter((item) => item !== id)
         }
-        else updated = [...this.selectedButton, id]
+        else updated.splice(listIndex, 0, id)
       }
 
       this.$emit("changeSelected", updated)

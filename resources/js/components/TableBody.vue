@@ -4,6 +4,7 @@
       <div class="flex py-1 border-b border-1 border-b-gray-300">
         <div class="w-[170px] text-black flex justify-center items-center">
           <button
+            v-if="item.Quote"
             @click="changeCollapseIndex(index)"
             class="bg-white text-black rounded pr-3"
           >
@@ -16,64 +17,16 @@
         <div class="w-[380px] text-gray-400 flex justify-start items-center">
           {{ item.Company }}
         </div>
-        <div class="w-[180px] text-black flex justify-around">
+        <div
+          class="w-[180px] text-black flex justify-around"
+          v-for="year in params.years"
+          :key="year"
+        >
           <p class="text-center w-[90px] pt-1">
-            {{
-              item.Quote
-                ? getQuoteItem(item.Quote, 5, 'FIX', 'Spread')
-                  ? '+' + getQuoteItem(item.Quote, 5, 'FIX', 'Spread') + 'bp'
-                  : ''
-                : ''
-            }}
+            {{ getQuoteItem(item.Quote, year, 'FIX', params.display) }}
           </p>
           <p class="text-center w-[90px] pt-1">
-            {{
-              item.Quote
-                ? getQuoteItem(item.Quote, 5, 'FRN', 'Spread')
-                  ? '+' + getQuoteItem(item.Quote, 5, 'FRN', 'Spread') + 'bp'
-                  : ''
-                : ''
-            }}
-          </p>
-        </div>
-        <div class="w-[180px] text-black flex justify-around">
-          <p class="text-center w-[90px] pt-1">
-            {{
-              item.Quote
-                ? getQuoteItem(item.Quote, 10, 'FIX', 'Spread')
-                  ? '+' + getQuoteItem(item.Quote, 10, 'FIX', 'Spread') + 'bp'
-                  : ''
-                : ''
-            }}
-          </p>
-          <p class="text-center w-[90px] pt-1">
-            {{
-              item.Quote
-                ? getQuoteItem(item.Quote, 10, 'FRN', 'Spread')
-                  ? '+' + getQuoteItem(item.Quote, 10, 'FRN', 'Spread') + 'bp'
-                  : ''
-                : ''
-            }}
-          </p>
-        </div>
-        <div class="w-[180px] text-black flex justify-around">
-          <p class="text-center w-[90px] pt-1">
-            {{
-              item.Quote
-                ? getQuoteItem(item.Quote, 40, 'FIX', 'Spread')
-                  ? '+' + getQuoteItem(item.Quote, 40, 'FIX', 'Spread') + 'bp'
-                  : ''
-                : ''
-            }}
-          </p>
-          <p class="text-center w-[90px] pt-1">
-            {{
-              item.Quote
-                ? getQuoteItem(item.Quote, 40, 'FRN', 'Spread')
-                  ? '+' + getQuoteItem(item.Quote, 40, 'FRN', 'Spread') + 'bp'
-                  : ''
-                : ''
-            }}
+            {{ getQuoteItem(item.Quote, year, 'FRN', params.display) }}
           </p>
         </div>
       </div>
@@ -82,155 +35,31 @@
         leave-active-class="animate-fade-out"
       >
         <div v-show="collapseIndex === index" class="flex flex-col">
-          <div class="flex py-1 border-b border-1 border-b-gray-300">
+          <div
+            class="flex py-1 border-b border-1 border-b-gray-300"
+            v-for="display in ['Spread', 'Yield', '3MLSpread'].filter(
+              (item) => item !== params.display
+            )"
+            :key="display"
+          >
             <div
               class="w-[170px] text-black flex justify-center items-center"
             ></div>
             <div
               class="w-[380px] text-gray-400 flex justify-start items-center"
             >
-              Yield
+              {{ display }}
             </div>
-            <div class="w-[180px] text-black flex justify-around">
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 5, 'FIX', 'Yield')
-                      ? getQuoteItem(item.Quote, 5, 'FIX', 'Yield') + '%'
-                      : ''
-                    : ''
-                }}
-              </p>
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 5, 'FRN', 'Yield')
-                      ? getQuoteItem(item.Quote, 5, 'FRN', 'Yield') + '%'
-                      : ''
-                    : ''
-                }}
-              </p>
-            </div>
-            <div class="w-[180px] text-black flex justify-around">
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 10, 'FIX', 'Yield')
-                      ? getQuoteItem(item.Quote, 10, 'FIX', 'Yield') + '%'
-                      : ''
-                    : ''
-                }}
-              </p>
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 10, 'FRN', 'Yield')
-                      ? getQuoteItem(item.Quote, 10, 'FRN', 'Yield') + '%'
-                      : ''
-                    : ''
-                }}
-              </p>
-            </div>
-            <div class="w-[180px] text-black flex justify-around">
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 40, 'FIX', 'Yield')
-                      ? getQuoteItem(item.Quote, 40, 'FIX', 'Yield') + '%'
-                      : ''
-                    : ''
-                }}
-              </p>
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 40, 'FRN', 'Yield')
-                      ? getQuoteItem(item.Quote, 40, 'FRN', 'Yield') + '%'
-                      : ''
-                    : ''
-                }}
-              </p>
-            </div>
-          </div>
-          <div class="flex py-1 border-b border-1 border-b-gray-300">
             <div
-              class="w-[170px] text-black flex justify-center items-center"
-            ></div>
-            <div
-              class="w-[380px] text-gray-400 flex justify-start items-center"
+              class="w-[180px] text-black flex justify-around"
+              v-for="year in params.years"
+              :key="year"
             >
-              3MLSpread
-            </div>
-            <div class="w-[180px] text-black flex justify-around">
               <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 5, 'FIX', '3MLSpread')
-                      ? '+' +
-                        getQuoteItem(item.Quote, 5, 'FIX', '3MLSpread') +
-                        'bp'
-                      : ''
-                    : ''
-                }}
+                {{ getQuoteItem(item.Quote, year, 'FIX', display) }}
               </p>
               <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 5, 'FRN', '3MLSpread')
-                      ? '+' +
-                        getQuoteItem(item.Quote, 5, 'FRN', '3MLSpread') +
-                        'bp'
-                      : ''
-                    : ''
-                }}
-              </p>
-            </div>
-            <div class="w-[180px] text-black flex justify-around">
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 10, 'FIX', '3MLSpread')
-                      ? '+' +
-                        getQuoteItem(item.Quote, 10, 'FIX', '3MLSpread') +
-                        'bp'
-                      : ''
-                    : ''
-                }}
-              </p>
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 10, 'FRN', '3MLSpread')
-                      ? '+' +
-                        getQuoteItem(item.Quote, 10, 'FRN', '3MLSpread') +
-                        'bp'
-                      : ''
-                    : ''
-                }}
-              </p>
-            </div>
-            <div class="w-[180px] text-black flex justify-around">
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 40, 'FIX', '3MLSpread')
-                      ? '+' +
-                        getQuoteItem(item.Quote, 40, 'FIX', '3MLSpread') +
-                        'bp'
-                      : ''
-                    : ''
-                }}
-              </p>
-              <p class="text-center w-[90px] pt-1">
-                {{
-                  item.Quote
-                    ? getQuoteItem(item.Quote, 40, 'FRN', '3MLSpread')
-                      ? '+' +
-                        getQuoteItem(item.Quote, 40, 'FRN', '3MLSpread') +
-                        'bp'
-                      : ''
-                    : ''
-                }}
+                {{ getQuoteItem(item.Quote, year, 'FRN', display) }}
               </p>
             </div>
           </div>
@@ -241,10 +70,13 @@
 </template>
 
 <script>
+import moment from "moment"
+
 export default {
   name: "TableBody",
   props: {
-    data: Array
+    data: Array,
+    params: Object
   },
   data () {
     return {
@@ -254,15 +86,27 @@ export default {
   methods: {
     convertDate (date) {
       if (!date) return
-      const dateObj = moment(date, 'YYYY-MM-DD'); // create a moment object from the input date
+      const dateObj = moment(date, 'YYYY-MM-DD');
       const formattedDate = dateObj.format('DD-MMM-YY').toUpperCase();
 
       return formattedDate
     },
     getQuoteItem (data, year, key1, key2) {
-      const filteredByKey1 = Object.values(data).filter((item) => item.Years === year && item.CouponType === key1)[0]
-      if (!filteredByKey1) return
-      return filteredByKey1[key2]
+      if (!data) return ""
+      const numberYear = Number(year.match(/\d+/)[0])
+      const filteredByKey1 = Object.values(data).filter((item) => item.Years === numberYear && item.CouponType === key1)[0]
+
+      if (!filteredByKey1 || !filteredByKey1[key2]) return ""
+      switch (key2) {
+        case "Spread":
+          return "+" + filteredByKey1[key2] + "bp"
+        case "3MLSpread":
+          return "+" + filteredByKey1[key2] + "bp"
+        case "Yield":
+          return filteredByKey1[key2] + "%"
+        default:
+          return ""
+      }
     },
     changeCollapseIndex (index) {
       if (this.collapseIndex === index) this.collapseIndex = ""
