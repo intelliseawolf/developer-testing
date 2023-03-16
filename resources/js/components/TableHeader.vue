@@ -6,27 +6,9 @@
     <div class="w-[380px] text-gray-400 flex justify-start items-end">
       COMPANY
     </div>
-    <div class="w-[180px] px-2">
+    <div class="w-[180px] px-2" v-for="year in params.years" :key="year">
       <p class="text-center border-b border-1 border-b-gray-400 font-medium">
-        5 YRS
-      </p>
-      <div class="flex justify-around text-gray-400">
-        <p class="text-center w-[90px]">FIX</p>
-        <p class="text-center w-[90px]">FRN</p>
-      </div>
-    </div>
-    <div class="w-[180px] px-2">
-      <p class="text-center border-b border-1 border-b-gray-400 font-medium">
-        10 YRS
-      </p>
-      <div class="flex justify-around text-gray-400">
-        <p class="text-center w-[90px]">FIX</p>
-        <p class="text-center w-[90px]">FRN</p>
-      </div>
-    </div>
-    <div class="w-[180px] px-2">
-      <p class="text-center border-b border-1 border-b-gray-400 font-medium">
-        40 YRS
+        {{ yearsObj[year] }}
       </p>
       <div class="flex justify-around text-gray-400">
         <p class="text-center w-[90px]">FIX</p>
@@ -38,6 +20,18 @@
 
 <script>
 export default {
-  name: "TableHeader"
+  name: "TableHeader",
+  props: {
+    params: Object
+  },
+  data () {
+    return {
+      yearsObj: {
+        "5yrs": "5 YRS",
+        "10yrs": "10 YRS",
+        "40yrs": "40 YRS",
+      }
+    }
+  }
 }
 </script>
