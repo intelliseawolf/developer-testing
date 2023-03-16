@@ -30,7 +30,7 @@ export default {
     getAverage (key, year) {
       let sum = 0;
       let count = 0;
-
+      if (!this.data) return
       for (let item of this.data) {
         if (!item.Quote) continue
         for (let subItem of Object.values(item.Quote)) {

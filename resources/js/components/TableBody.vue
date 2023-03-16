@@ -89,7 +89,7 @@ export default {
   name: "TableBody",
   props: {
     data: Array,
-    params: Object
+    params: Object,
   },
   data () {
     return {
@@ -143,7 +143,7 @@ export default {
         }
       }
       return result
-    }
+    },
   }
 }
 </script>

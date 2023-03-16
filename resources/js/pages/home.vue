@@ -30,9 +30,9 @@
         />
       </div>
       <div class="table mt-4">
-        <table-header :params="params" />
-        <table-body :data="getData" :params="params" />
-        <average-section :params="params" :data="getData" />
+        <table-header :params="params" :sort="sort" @updateSort="updateSort" />
+        <table-body :data="sortedData" :params="params" />
+        <average-section :params="params" :data="sortedData" />
       </div>
     </div>
   </div>
@@ -40,6 +40,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex"
+import moment from "moment"
 
 import ButtonGroup from "../components/ButtonGroup.vue"
 import TableHeader from '../components/TableHeader.vue'
@@ -80,6 +81,11 @@ export default {
         years: ['5yrs', '10yrs', '40yrs'],
         display: "Spread"
       },
+      sort: {
+        companySort: "",
+        dateSort: ""
+      },
+      sortedData: this.getData
     }
   },
   computed: {
@@ -95,11 +101,61 @@ export default {
         [key]: value
       }
       this.fetchData(this.params)
+    },
+    updateSort (key) {
+      this.sort = {
+        ...this.sort,
+        [key]: this.sort[key] === 'desc' ? "asc" : "desc"
+      }
     }
   },
   watch: {
     'params.companyName': function () {
       this.fetchData(this.params)
+    },
+    'sort': function (newVal, oldVal) {
+      if (newVal.companySort !== oldVal.companySort) {
+        if (this.sort.companySort === "desc") this.sortedData = this.sortedData.sort((a, b) => {
+          if (a.Company < b.Company) {
+            return -1;
+          } else if (a.Company > b.Company) {
+            return 1;
+          } else {
+            return 0;
+          }
+        })
+        if (this.sort.companySort === "asc")
+          this.sortedData = this.sortedData.sort((a, b) => {
+            if (a.Company < b.Company) {
+              return 1;
+            } else if (a.Company > b.Company) {
+              return -1;
+            } else {
+              return 0;
+            }
+          })
+      }
+
+      if (newVal.dateSort !== oldVal.dateSort) {
+        let dateExistedData = this.sortedData.filter(item => item.DateSent !== null);
+        const dateNonExistedData = this.sortedData.filter(item => item.DateSent === null);
+        dateExistedData = dateExistedData.map((item) => ({
+          ...item,
+          DateSent: moment(item.DateSent)
+        }))
+
+        if (this.sort.dateSort === "desc") {
+          dateExistedData.sort((a, b) => a.DateSent - b.DateSent)
+        }
+        if (this.sort.dateSort === "asc") {
+          dateExistedData.sort((a, b) => b.DateSent - a.DateSent)
+        }
+
+        this.sortedData = [...dateExistedData, ...dateNonExistedData]
+      }
+    },
+    'getData': function (newVal) {
+      this.sortedData = newVal
     }
   }
 }
