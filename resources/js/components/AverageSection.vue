@@ -37,6 +37,7 @@ export default {
           if (
             subItem['CouponType'] === key
             && subItem['Years'] === Number(year.match(/\d+/)[0])
+            && subItem[this.params.display]
           ) {
             count++
             sum += subItem[this.params.display]
@@ -44,7 +45,7 @@ export default {
         }
       }
       if (!sum || !count) return ""
-      const result = Math.floor(sum / count);
+      const result = (sum / count).toFixed(2);
 
       switch (this.params.display) {
         case "Spread":

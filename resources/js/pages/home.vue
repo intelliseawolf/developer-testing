@@ -26,6 +26,7 @@
           type="text"
           class="rounded-lg bg-gray-50 border text-gray-900 focus:ring-[#527094] focus:border-[#527094] block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5"
           placeholder="Filter by company name..."
+          v-model="params.companyName"
         />
       </div>
       <div class="table mt-4">
@@ -96,5 +97,10 @@ export default {
       this.fetchData(this.params)
     }
   },
+  watch: {
+    'params.companyName': function () {
+      this.fetchData(this.params)
+    }
+  }
 }
 </script>
