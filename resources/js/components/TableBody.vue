@@ -1,7 +1,12 @@
 <template>
   <div>
     <div v-for="(item, index) in data" :key="item.Company + index">
-      <div class="flex py-1 border-b border-1 border-b-gray-300">
+      <div
+        :class="{
+          'flex border-b border-1 border-b-gray-300': true,
+          'border-0': index === data.length - 1
+        }"
+      >
         <div class="w-[170px] text-black flex justify-center items-center">
           <button
             v-if="item.Quote"
@@ -22,10 +27,18 @@
           v-for="year in params.years"
           :key="year"
         >
-          <p class="text-center w-[90px] pt-1">
+          <p
+            :class="{
+              'text-center w-[90px]': true,
+              'bg-yellow-100': isMin(
+                getQuoteItem(item.Quote, year, 'FIX', params.display),
+                year
+              )
+            }"
+          >
             {{ getQuoteItem(item.Quote, year, 'FIX', params.display) }}
           </p>
-          <p class="text-center w-[90px] pt-1">
+          <p class="text-center w-[90px]">
             {{ getQuoteItem(item.Quote, year, 'FRN', params.display) }}
           </p>
         </div>
@@ -36,7 +49,7 @@
       >
         <div v-show="collapseIndex === index" class="flex flex-col">
           <div
-            class="flex py-1 border-b border-1 border-b-gray-300"
+            class="flex border-b border-1 border-b-gray-300"
             v-for="display in ['Spread', 'Yield', '3MLSpread'].filter(
               (item) => item !== params.display
             )"
@@ -55,10 +68,10 @@
               v-for="year in params.years"
               :key="year"
             >
-              <p class="text-center w-[90px] pt-1">
+              <p class="text-center w-[90px]">
                 {{ getQuoteItem(item.Quote, year, 'FIX', display) }}
               </p>
-              <p class="text-center w-[90px] pt-1">
+              <p class="text-center w-[90px]">
                 {{ getQuoteItem(item.Quote, year, 'FRN', display) }}
               </p>
             </div>
@@ -112,6 +125,25 @@ export default {
       if (this.collapseIndex === index) this.collapseIndex = ""
       else this.collapseIndex = index
     },
+    isMin (val, year) {
+      if (!val) return false
+      let result = true;
+
+      for (let item of this.data) {
+        if (!item.Quote) continue
+        for (let subItem of Object.values(item.Quote)) {
+          if (
+            subItem['CouponType'] === "FIX"
+            && subItem[this.params.display] < Number(val.match(/\d+/)[0])
+            && subItem['Years'] === Number(year.match(/\d+/)[0])
+          ) {
+            result = false;
+            break
+          }
+        }
+      }
+      return result
+    }
   }
 }
 </script>

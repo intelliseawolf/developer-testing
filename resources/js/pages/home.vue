@@ -31,6 +31,7 @@
       <div class="table mt-4">
         <table-header :params="params" />
         <table-body :data="getData" :params="params" />
+        <average-section :params="params" :data="getData" />
       </div>
     </div>
   </div>
@@ -42,13 +43,15 @@ import { mapActions, mapGetters } from "vuex"
 import ButtonGroup from "../components/ButtonGroup.vue"
 import TableHeader from '../components/TableHeader.vue'
 import TableBody from "../components/TableBody.vue"
+import AverageSection from '../components/AverageSection.vue'
 
 export default {
   name: "Home",
   components: {
     ButtonGroup,
     TableHeader,
-    TableBody
+    TableBody,
+    AverageSection
   },
   mounted () {
     this.fetchData(this.params)
