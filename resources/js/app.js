@@ -1,13 +1,12 @@
-require('./bootstrap')
+require("./bootstrap");
 
-import Vue from 'vue'
-import Vueform from '@vueform/vueform/plugin'
-import vueformConfig from './../../vueform.config.js'
+import Vue from "vue";
 
-Vue.use(Vueform, vueformConfig)
-
-import App from './components/App.vue'
+import router from "./router";
+import App from "./App.vue";
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+    el: "#app",
+    router,
+    render: (h) => h(App),
+});
